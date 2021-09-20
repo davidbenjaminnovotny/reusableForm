@@ -1,7 +1,7 @@
 {
             "minLengthErr" : {
-                "eng": "Please enter a name which has at least one charactetr",
-                "de": "Bitte tippen Sie ein Name die zumindest ein Charakter enthalt"
+                "eng": "This field must be filled out",
+                "de": "Diese feld muss ausgefühlt werden"
             },
             "wrongCharErr" : {
                 "eng": "Please enter a name which uses normal character",
@@ -10,5 +10,13 @@
             "emailUnformat" : {
                 "eng": "Please enter a correctly formated email address",
                 "de": "Bitte tippen Sie ein korrektes Email Adresse ein"
+            },
+            "minLengthPassErr" : {
+                "eng": "Password must be 8 characters or longer",
+                "de": "Passwort muss 8 charakteren lang oder länger werden"
+            },
+            "maxLengthPassErr" : {
+                "eng": "Password can not be 31 characters or longer",
+                "de": "Passwort kann nicht 31 charakteren lang oder länger werden"
             }
 }

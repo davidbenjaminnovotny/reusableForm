@@ -10,52 +10,39 @@
             type="text" 
             v-model.trim="form.firstName.data" 
             :class='form.firstName.errors.length === 0 ? "corrInput" : "errInput"'/>
-
-            <ul 
-            v-show="form.firstName.errors" 
-            v-for="err in form.firstName.errors" 
-            :key="err">
-                <li>{{err}}</li>
-            </ul>
+            
+            <span v-show="form.firstName.errors">{{form.firstName.errors[0]}}</span>
+           
           </div>
 
           <!-- LAST NAME -->
           <div class="form-group">
-            <label for="last-name">Last Name</label>
+            <label for="last-name">Last Name*</label>
             <input 
             name="last-name" 
             type="text" 
             v-model.trim="form.lastName.data" 
             :class='form.lastName.errors.length === 0 ? "corrInput" : "errInput"'/>
 
-            <ul 
-            v-show="form.lastName.errors" 
-            v-for="err in form.lastName.errors" 
-            :key="err">
-                <li>{{err}}</li>
-            </ul>
+             <span v-show="form.lastName.errors"> {{form.lastName.errors[0]}}</span>
           </div>
 
           <!-- EMAIL -->
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">Email*</label>
             <input 
             name="email" 
             type="email" 
             v-model.trim="form.email.data" 
             :class='form.email.errors.length === 0 ? "corrInput" : "errInput"'/>
 
-            <ul 
-            v-show="form.email.errors" 
-            v-for="err in form.email.errors" 
-            :key="err">
-                <li>{{err}}</li>
-            </ul>
+            <span v-show="form.email.errors">{{form.email.errors[0]}}</span>
           </div>
 
           <!-- GENDER -->
           <div class="form-group flex-row">
-            
+            Gender*
+       
             <div class="sub-form-group">
               <input type="radio" id="Male" name="gender" value="Male" v-model="form.gender.data">
               <label for="Male">Male</label><br>
@@ -66,29 +53,55 @@
               <label for="Female">Female</label><br>
             </div>
 
+             <div class="sub-form-group">
+              <input type="radio" id="Other" name="gender" value="Other" v-model="form.gender.data">
+              <label for="Other">Other</label><br>
+            </div>
+
+              <div class="sub-form-group">
+              <input type="radio" id="NotImportant" name="gender" value="Not Important" v-model="form.gender.data">
+              <label for="NotImportant">Not Important</label><br>
+            </div>
+
           </div>
 
           <!-- PASSWORD -->
-           <div class="form-group">
-            <label for="password">Password</label>
-            <input name="password" type="password" v-model.trim="form.password.data"/>
+
+            <div class="form-group">
+            <label for="Password">Password*</label>
+            <input 
+            name="Password" 
+            type="password" 
+            v-model.trim="form.password.data" 
+            :class='form.password.errors.length === 0 ? "corrInput" : "errInput"'/>
+            <span
+            :class='{
+              strongBadge: form.password.strength === "Strong",
+              mediumBadge: form.password.strength === "Medium",
+              weakBadge: form.password.strength === "Weak",}'
+            
+            >{{form.password.strength}}</span>
+            <span v-show='form.password.strength === "Weak"'>
+              Try to use variations of numbers and characters to make your password more difficult to figure out.
+            </span>
+            <span v-show="form.password.errors">{{form.password.errors[0]}}</span>
           </div>
 
           <!-- VERIFY PASSWORD -->
            <div class="form-group">
-            <label for="verify-password">Verify Password</label>
+            <label for="verify-password">Verify Password*</label>
             <input name="verify-password" type="password" v-model.trim="form.verifyPassword.data"/>
           </div>
 
           <!-- MESSAGE -->
            <div class="form-group">
-           <label for="message">Message</label>
+           <label for="message">Message*</label>
            <textarea name="message"></textarea>
           </div>
 
            <!-- AGREEMENTS -->
            <div class="form-group">
-           <label for="Agreement">Terms and conditions</label>
+           <label for="Agreement">Terms and conditions*</label>
            <input type="checkbox" name="agreement" v-model="form.agreement.data"/>
           </div>
 
@@ -137,7 +150,8 @@ export default {
         },
         password: {
           data:"",
-          errors:[]
+          errors:[],
+          strength:""
         },
        verifyPassword: {
           data:"",
@@ -180,6 +194,15 @@ export default {
       
      }
     },
+     "form.password.data":{
+      deep: true,
+      handler(val){
+       const check =  Validation.password(val, this.currLang)
+       check ?  this.form.password.errors = check.errors :  this.form.password.errors = ""
+       check.passwordStrength ? this.form.password.strength = check.passwordStrength : this.form.password.strength = "weak"
+      
+     }
+    },
      
   },
   methods:{
@@ -215,6 +238,16 @@ textarea{
 }
 .corrInput{
  
+}
+
+.strongBadge{
+  color:green;
+}
+.mediumBadge{
+  color:orange;
+}
+.weakBadge{
+  color:red;
 }
 
 </style>
