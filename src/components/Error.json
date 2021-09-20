@@ -1,0 +1,14 @@
+{
+            "minLengthErr" : {
+                "eng": "Please enter a name which has at least one charactetr",
+                "de": "Bitte tippen Sie ein Name die zumindest ein Charakter enthalt"
+            },
+            "wrongCharErr" : {
+                "eng": "Please enter a name which uses normal character",
+                "de": "Bitte tippen Sie ein Name  die normale Charakteren verwendet"
+            },
+            "emailUnformat" : {
+                "eng": "Please enter a correctly formated email address",
+                "de": "Bitte tippen Sie ein korrektes Email Adresse ein"
+            }
+}
