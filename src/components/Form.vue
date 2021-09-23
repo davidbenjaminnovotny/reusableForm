@@ -90,7 +90,10 @@
           <!-- VERIFY PASSWORD -->
            <div class="form-group">
             <label for="verify-password">Verify Password*</label>
-            <input name="verify-password" type="password" v-model.trim="form.verifyPassword.data"/>
+            <input name="verify-password" type="password" 
+            v-model.trim="form.verifyPassword.data" 
+           />
+           <span v-show="form.verifyPassword.errors">{{form.verifyPassword.errors[0]}}</span>
           </div>
 
           <!-- MESSAGE -->
@@ -103,11 +106,12 @@
            <div class="form-group">
            <label for="Agreement">Terms and conditions*</label>
            <input type="checkbox" name="agreement" v-model="form.agreement.data"/>
+               <span v-show="form.agreement.errors">{{form.agreement.errors[0]}}</span>
           </div>
 
           <!-- SUBMIT FORM -->
           <div class="form-group">
-            <button type="submit" @click="runCall()">
+            <button type="submit" @click="submitForm()" v-on:submit.prevent="onSubmit">
               Submit
             </button>
           </div>
@@ -203,12 +207,35 @@ export default {
       
      }
     },
+    "form.verifyPassword.data":{
+      deep: true,
+      handler(val){
+     /*  const check =  Validation.passwordVerify(val, this.form.verifyPassword.data, this.currLang)
+       check ?  this.form.verifyPassword.errors = check.errors :  this.form.verifyPassword.errors = ""
+       */
+       
+      
+     }
+    },
+      "form.agreement.data":{
+      deep: true,
+      handler(val){
+        if(val.checked){
+          alert("PENIS")
+        }
+      
+     }
+    },
      
   },
   methods:{
     runCall: function(){
       Validation.testCall()
     },
+    submitForm: function(e){
+      e.preventDefault();
+      
+    }
   }
 }
 </script>

@@ -18,5 +18,24 @@
             "maxLengthPassErr" : {
                 "eng": "Password can not be 31 characters or longer",
                 "de": "Passwort kann nicht 31 charakteren lang oder länger werden"
+            },
+            "passStrength" : {
+                "weak":{
+                    "eng": "Weak",
+                    "de": "Schwach"
+                },
+                "medium":{
+                    "eng": "Medium",
+                    "de": "Mittle"
+                },
+                "strong":{
+                    "eng": "Strong",
+                    "de": "Stark"
+                }  
+            },
+            "passMatch" : {
+                "eng": "Both entered passwords must each other",
+                "de": "Beide eingetippte Passwörter mussen gleich sein "
             }
+
 }
