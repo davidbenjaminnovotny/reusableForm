@@ -221,7 +221,7 @@ export default {
       deep: true,
       handler(val){
         if(val.checked){
-          alert("PENIS")
+          alert("checked")
         }
       
      }
