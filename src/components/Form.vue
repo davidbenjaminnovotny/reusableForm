@@ -1,11 +1,13 @@
 <template>
   <div class="Form">
-      <form>
+      <form @submit.prevent> 
+
 
           <!-- FIRST NAME -->
           <div class="form-group">
             <label for="first-name">First Name</label>
             <input 
+            placeholder="Max"
             name="first-name" 
             type="text" 
             v-model.trim="form.firstName.data" 
@@ -19,18 +21,21 @@
           <div class="form-group">
             <label for="last-name">Last Name*</label>
             <input 
+            placeholder="Muster"
             name="last-name" 
             type="text" 
             v-model.trim="form.lastName.data" 
             :class='form.lastName.errors.length === 0 ? "corrInput" : "errInput"'/>
 
              <span v-show="form.lastName.errors"> {{form.lastName.errors[0]}}</span>
+             
           </div>
 
           <!-- EMAIL -->
           <div class="form-group">
             <label for="email">Email*</label>
             <input 
+            placeholder="Max.Muster@gmail.com"
             name="email" 
             type="email" 
             v-model.trim="form.email.data" 
@@ -92,6 +97,7 @@
             <label for="verify-password">Verify Password*</label>
             <input name="verify-password" type="password" 
             v-model.trim="form.verifyPassword.data" 
+             :class='form.verifyPassword.errors.length === 0 ? "corrInput" : "errInput"'
            />
            <span v-show="form.verifyPassword.errors">{{form.verifyPassword.errors[0]}}</span>
           </div>
@@ -99,7 +105,11 @@
           <!-- MESSAGE -->
            <div class="form-group">
            <label for="message">Message*</label>
-           <textarea name="message"></textarea>
+           <textarea name="message"
+           placeholder="Hello, Grüetzi, Bonjour..."
+            v-model.trim="form.message.data" 
+           ></textarea>
+              <span v-show="form.message.errors">{{form.message.errors[0]}}</span>
           </div>
 
            <!-- AGREEMENTS -->
@@ -111,9 +121,10 @@
 
           <!-- SUBMIT FORM -->
           <div class="form-group">
-            <button type="submit" @click="submitForm()" v-on:submit.prevent="onSubmit">
+            <button :disabled="onSubmit.disabled" ref="submitButton" @click="submitForm()">
               Submit
             </button>
+                <span>{{onSubmit.errors}}</span>
           </div>
         
 
@@ -130,7 +141,7 @@ export default {
   
   },
   created(){
-    // Function that should pull current Lang of application.
+    // Function that should pull current Lang of application/site.
     this.currLang = "eng"
   },
   data (){
@@ -138,38 +149,52 @@ export default {
       form:{
         firstName: {
           data:"",
-          errors:[]
+          errors:[],
+          set:false
         },
         lastName: {
           data:"",
-          errors:[]
+          errors:[],
+          set:false
         },
         gender: {
           data:"",
-          errors:[]
+          errors:[],
+          set:false
         },
         email: {
           data:"",
-          errors:[]
+          errors:[],
+          set:false
         },
         password: {
           data:"",
           errors:[],
-          strength:""
+          strength:"",
+          set:false
         },
        verifyPassword: {
           data:"",
-          errors:[]
+          errors:[],
+          set:false
+        },
+      message: {
+          data:"",
+          errors:[],
+          set:false
         },
       agreement: {
           data:"",
-          errors:[]
+          errors:[],
+          set:false
         },
-      
+     
       },
-      errorMessages:{
-        minLengthErr:"penishead"
+         onSubmit:{
+        errors:"",
+        disabled:false
       },
+    
       currLang: ""
     }
   },
@@ -178,7 +203,15 @@ export default {
       deep: true,
       handler(val){
        const check =  Validation.checkName(val, this.currLang)
-       check ?  this.form.firstName.errors = check :  this.form.firstName.errors = ""
+
+       if(check.length){
+         this.form.firstName.errors = check
+         this.form.firstName.set = false
+       }else{
+          this.form.firstName.errors = "" 
+           this.form.firstName.set = true
+       }
+       
       
      }
     },
@@ -186,7 +219,14 @@ export default {
       deep: true,
       handler(val){
        const check =  Validation.checkName(val, this.currLang)
-       check ?  this.form.lastName.errors = check :  this.form.lastName.errors = ""
+     
+        if(check.length){
+         this.form.lastName.errors = check
+         this.form.lastName.set = false
+       }else{
+          this.form.lastName.errors = "" 
+           this.form.lastName.set = true
+       }
       
      }
     },
@@ -194,7 +234,21 @@ export default {
       deep: true,
       handler(val){
        const check =  Validation.email(val, this.currLang)
-       check ?  this.form.email.errors = check :  this.form.email.errors = ""
+      
+       if(check.length){
+         this.form.email.errors = check
+         this.form.email.set = false
+       }else{
+          this.form.email.errors = "" 
+           this.form.email.set = true
+       }
+      
+     }
+    },
+     "form.gender.data":{
+      deep: true,
+      handler(){
+       this.form.gender.set = true
       
      }
     },
@@ -202,27 +256,59 @@ export default {
       deep: true,
       handler(val){
        const check =  Validation.password(val, this.currLang)
-       check ?  this.form.password.errors = check.errors :  this.form.password.errors = ""
-       check.passwordStrength ? this.form.password.strength = check.passwordStrength : this.form.password.strength = "weak"
+
+        if(check.errors.length){
+         this.form.password.errors = check.errors
+         this.form.password.set = false
+         console.log("wrong")
+       }else{
+          this.form.password.errors = "" 
+           this.form.password.set = true
+       }
       
+       check.passwordStrength ? this.form.password.strength = check.passwordStrength : this.form.password.strength = "weak"
      }
     },
     "form.verifyPassword.data":{
       deep: true,
       handler(val){
-     /*  const check =  Validation.passwordVerify(val, this.form.verifyPassword.data, this.currLang)
-       check ?  this.form.verifyPassword.errors = check.errors :  this.form.verifyPassword.errors = ""
-       */
-       
-      
+       const check =  Validation.passwordVerify({verPass: val, orPass: this.form.password.data}, this.currLang)
+       if(check.length){
+         this.form.verifyPassword.errors = check
+         this.form.verifyPassword.set = false
+       }else{
+          this.form.verifyPassword.errors = "" 
+           this.form.verifyPassword.set = true
+       }  
      }
     },
       "form.agreement.data":{
       deep: true,
       handler(val){
-        if(val.checked){
-          alert("checked")
-        }
+        
+         if(val){
+        
+         this.form.agreement.set = true
+       }else{
+         
+           this.form.agreement.set = false
+       }  
+     
+     }
+    },
+      "form.message.data":{
+      deep: true,
+      handler(val){
+        
+      const check =  Validation.message(val, this.currLang)
+       if(check.length){
+         this.form.message.errors = check
+         this.form.message.set = false
+       }else{
+          this.form.message.errors = "" 
+           this.form.message.set = true
+       }  
+        
       
      }
     },
@@ -232,11 +318,44 @@ export default {
     runCall: function(){
       Validation.testCall()
     },
-    submitForm: function(e){
-      e.preventDefault();
+    submitForm: async function(){
+    let errors = 0
+    for (const key in this.form) {
+        console.log(this.form[key])
       
+         if(this.form[key].set === false){
+             errors++
+             if(errors){
+          this.onSubmit.errors = "All fields must be filled out correctly and all obligatory options must be selected."
+             }
+            
+          }else{
+             this.onSubmit.errors = ""
+             this.onSubmit.disabled = true
+
+             /* SIMPLIFIED EXAMPLE:
+             To API endpoint where data can be validated for the second and final time
+                
+                const post = await Axios.post("/sendFrom", this.form)
+                .then((e) => {
+                    if(e.data.errors){
+                        SET ERRORS IN FORM
+                    }else{
+                      this.onSubmit.disabled = false
+                    }
+                })
+                .catch((e) => {
+                  console.log(e)
+                })
+
+             */
+              
+             }
+          }
+
     }
   }
+ 
 }
 </script>
 
@@ -263,13 +382,12 @@ textarea{
 .errInput{
   border:5px solid red;
 }
-.corrInput{
- 
-}
+.corrInput{}
 
 .strongBadge{
   color:green;
 }
+
 .mediumBadge{
   color:orange;
 }

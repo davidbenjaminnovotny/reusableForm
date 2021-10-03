@@ -58,15 +58,25 @@ const password = (val, currLang) => {
         passwordStrength
     }
 }
-const passwordVerify = (val, orPass, currLang) => {
-  
+
+// Basic Double Password Validation
+const passwordVerify = (val,  currLang) => {
     let errors = []
-    if (val !== orPass) {
+    if (val.verPass !== val.orPass) {
         errors.push(Errors["passMatch"][currLang])
     }
-
     return errors
 }
+
+// Basic Message Validation
+const message = (val,  currLang) => {
+      let errors = []
+      if (val.length < 1) {
+        errors.push(Errors["messageLength"][currLang])
+        
+      }
+      return errors
+  }
 
 
 
@@ -74,6 +84,7 @@ export default {
     checkName,
     email,
     password,
-    passwordVerify
+    passwordVerify,
+    message
 
 }

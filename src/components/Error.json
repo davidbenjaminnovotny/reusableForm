@@ -1,23 +1,23 @@
 {
             "minLengthErr" : {
                 "eng": "This field must be filled out",
-                "de": "Diese feld muss ausgefühlt werden"
+                "de": "Diese feld muss ausgefüllt werden"
             },
             "wrongCharErr" : {
-                "eng": "Please enter a name which uses normal character",
-                "de": "Bitte tippen Sie ein Name  die normale Charakteren verwendet"
+                "eng": "Please enter a name which uses normal characters",
+                "de": "Bitte geben Sie einen Namen ein, der normale Zeichen verwendet"
             },
             "emailUnformat" : {
                 "eng": "Please enter a correctly formated email address",
-                "de": "Bitte tippen Sie ein korrektes Email Adresse ein"
+                "de": "Bitte geben Sie eine korrekt formatierte E-Mail-Adresse ein"
             },
             "minLengthPassErr" : {
                 "eng": "Password must be 8 characters or longer",
-                "de": "Passwort muss 8 charakteren lang oder länger werden"
+                "de": "Das Passwort muss mindestens 8 Zeichen lang sein"
             },
             "maxLengthPassErr" : {
                 "eng": "Password can not be 31 characters or longer",
-                "de": "Passwort kann nicht 31 charakteren lang oder länger werden"
+                "de": "Passwort darf nicht 31 Zeichen oder länger sein"
             },
             "passStrength" : {
                 "weak":{
@@ -26,7 +26,7 @@
                 },
                 "medium":{
                     "eng": "Medium",
-                    "de": "Mittle"
+                    "de": "Mittlestark"
                 },
                 "strong":{
                     "eng": "Strong",
@@ -35,7 +35,11 @@
             },
             "passMatch" : {
                 "eng": "Both entered passwords must each other",
-                "de": "Beide eingetippte Passwörter mussen gleich sein "
+                "de": "Beide eingegebenen Passwörter müssen zueinander passen"
+            },
+            "messageLength" : { 
+                "eng": "Message field must contain something",
+                "de": "Nachrichtenfeld muss etwas enthalten"
             }
 
 }
